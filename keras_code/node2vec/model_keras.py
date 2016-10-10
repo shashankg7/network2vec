@@ -21,7 +21,7 @@ from keras import backend as K
 
 from keras.models import Model
 from keras.layers import Lambda, Input, Flatten, Dense
-from keras.layers.core import Reshape, Permute
+from keras.layers.core import Reshape, Permute, Dropout
 from keras.engine import Layer
 from keras import initializations
 from keras.layers.embeddings import Embedding
@@ -62,7 +62,10 @@ def model_node2vec(embed_dim=64):
     model = Sequential()
     model.add(Embedding(N+1, embed_dim, input_length=2))
     model.add(Permute((2,1)))
-    model.add(NodeEmbedLayer(15))
+    model.add(NodeEmbedLayer(32))
+    model.add(Dropout(0.25))
+    model.add(Dense(10))
+    model.add(Dropout(5))
     model.add(Dense(1, activation='sigmoid'))
     return model
 
